@@ -2,83 +2,13 @@
   "version": 1,
   "skills": {
     "skill-creator": {
-      "created": "2026-03-16",
-      "lastUsed": "2026-03-16",
-      "lastUpdated": "2026-03-16",
-      "useCount": 1,
-      "corrections": 0,
-      "successRate": null,
-      "notes": ["Initial creation — bootstrapped the skill lifecycle system"],
-      "status": "active"
-    },
-    "agent-browser-core": {
-      "created": "2025-01-01",
+      "created": "INSTALL_DATE",
       "lastUsed": null,
       "lastUpdated": null,
       "useCount": 0,
       "corrections": 0,
       "successRate": null,
-      "notes": ["Pre-existing skill, usage tracking starts now"],
-      "status": "active"
-    },
-    "qmd": {
-      "created": "2025-01-01",
-      "lastUsed": null,
-      "lastUpdated": null,
-      "useCount": 0,
-      "corrections": 0,
-      "successRate": null,
-      "notes": ["Pre-existing skill, usage tracking starts now"],
-      "status": "active"
-    },
-    "scrape": {
-      "created": "2025-01-01",
-      "lastUsed": null,
-      "lastUpdated": null,
-      "useCount": 0,
-      "corrections": 0,
-      "successRate": null,
-      "notes": ["Pre-existing skill, usage tracking starts now"],
-      "status": "active"
-    },
-    "searxng": {
-      "created": "2025-01-01",
-      "lastUsed": null,
-      "lastUpdated": null,
-      "useCount": 0,
-      "corrections": 0,
-      "successRate": null,
-      "notes": ["Pre-existing skill, pending Docker setup"],
-      "status": "active"
-    },
-    "github": {
-      "created": "2025-01-01",
-      "lastUsed": null,
-      "lastUpdated": null,
-      "useCount": 0,
-      "corrections": 0,
-      "successRate": null,
-      "notes": ["Pre-existing skill, usage tracking starts now"],
-      "status": "active"
-    },
-    "magma-mcp": {
-      "created": "2025-01-01",
-      "lastUsed": null,
-      "lastUpdated": null,
-      "useCount": 0,
-      "corrections": 0,
-      "successRate": null,
-      "notes": ["Pre-existing skill, Lightning/Amboss integration"],
-      "status": "active"
-    },
-    "kanban-snapshot": {
-      "created": "2025-01-01",
-      "lastUsed": null,
-      "lastUpdated": null,
-      "useCount": 0,
-      "corrections": 0,
-      "successRate": null,
-      "notes": ["Pre-existing skill, usage tracking starts now"],
+      "notes": ["Initial install — skill lifecycle system bootstrapped"],
       "status": "active"
     }
   },

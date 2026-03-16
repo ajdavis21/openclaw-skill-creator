@@ -3,7 +3,7 @@ name: skill-creator
 version: 1.0.0
 description: >
   Create, improve, retire, and optimize OpenClaw skills with a built-in learning loop.
-  Use this skill whenever Andrew asks to create a new skill, turn a workflow into a skill,
+  Use this skill whenever the user asks to create a new skill, turn a workflow into a skill,
   improve or update an existing skill, review which skills are stale or underused,
   optimize a skill's triggering description, or when you notice a repeated pattern
   that should become a skill. Also triggers on "make this a skill", "capture this workflow",
@@ -19,13 +19,13 @@ metadata:
 
 You are the skill lifecycle manager for OpenClaw. Your job is to create new skills, improve existing ones, retire stale ones, and continuously optimize the skill library through a built-in learning loop.
 
-Skills are how moto (the OpenClaw agent) gains new capabilities. A good skill library means moto gets better at their job over time without Andrew having to repeat instructions.
+Skills are how your agent gains new capabilities. A good skill library means the agent gets better at its job over time without the user having to repeat instructions.
 
 ---
 
 ## The Learning Loop
 
-This is the core differentiator. Every skill goes through a continuous improvement cycle:
+Every skill goes through a continuous improvement cycle:
 
 ```
 CREATE → USE → OBSERVE → EVALUATE → IMPROVE → repeat
@@ -35,7 +35,7 @@ CREATE → USE → OBSERVE → EVALUATE → IMPROVE → repeat
 
 1. **CREATE** — A skill is born (from a request, a captured workflow, or a pattern you noticed)
 2. **USE** — The skill gets invoked during real work
-3. **OBSERVE** — Track what happened: Did it work? Did Andrew correct the output? Did it need manual intervention?
+3. **OBSERVE** — Track what happened: Did it work? Did the user correct the output? Did it need manual intervention?
 4. **EVALUATE** — Periodically assess: Is this skill pulling its weight? Is it accurate? Is it triggering correctly?
 5. **IMPROVE** — Update the skill based on what you learned. Tighten instructions, add edge cases, fix triggers.
 
@@ -64,7 +64,7 @@ Maintain a skill ledger at `workspace/skills/skill-creator/skill-ledger.json`:
 **When to update the ledger:**
 - After creating a skill → add entry
 - After a skill is used → increment `useCount`, update `lastUsed`
-- After Andrew corrects a skill's output → increment `corrections`, add a note about what went wrong
+- After the user corrects a skill's output → increment `corrections`, add a note about what went wrong
 - After improving a skill → update `lastUpdated`, reset correction count if the fix addressed the pattern
 - After retiring a skill → set `status` to `retired`
 
@@ -75,7 +75,7 @@ During heartbeats or when prompted, review the ledger and flag:
 - **Struggling skills**: `corrections / useCount > 0.3` (>30% correction rate) → needs improvement
 - **Missing skills**: You keep doing the same multi-step workflow manually → suggest creating a skill for it
 
-Present audit results to Andrew. He decides what to act on.
+Present audit results to the user. They decide what to act on.
 
 ---
 
@@ -85,12 +85,12 @@ Present audit results to Andrew. He decides what to act on.
 
 Figure out what this skill should do. Sources:
 
-1. **Andrew asks directly** — "Make a skill for X"
+1. **User asks directly** — "Make a skill for X"
 2. **Captured workflow** — "Turn what we just did into a skill"
 3. **Pattern recognition** — You notice you've done the same thing 3+ times
 
 For each, nail down:
-- What does this skill enable moto to do?
+- What does this skill enable the agent to do?
 - When should it trigger? (user phrases, contexts)
 - What's the expected output format?
 - What tools/systems does it need?
@@ -140,7 +140,7 @@ metadata:
 
 # Skill Name
 
-[Clear, concise instructions for how moto should execute this skill]
+[Clear, concise instructions for how the agent should execute this skill]
 
 ## When to Use
 
@@ -160,7 +160,7 @@ metadata:
 ```
 
 **Writing principles:**
-- Explain the *why* behind instructions, not just the *what*. Moto is smart — understanding intent produces better results than rigid rules.
+- Explain the *why* behind instructions, not just the *what*. The agent is smart — understanding intent produces better results than rigid rules.
 - Keep it under 500 lines. If longer, split into references/ files with clear pointers.
 - Use imperative form: "Read the file" not "You should read the file"
 - Include examples from real work when available
@@ -172,7 +172,7 @@ After creating the SKILL.md:
 
 1. Add entry to `workspace/SKILLS.md` in the appropriate table
 2. Add entry to `skill-ledger.json`
-3. Tell Andrew what you created and where it lives
+3. Tell the user what you created and where it lives
 
 ### Step 5: Test It
 
@@ -181,7 +181,7 @@ Run the skill against 2-3 realistic prompts:
 - If subagents are available: spawn sessions that have access to the skill and run test prompts
 - If not: walk through the skill yourself on a test case
 
-Share results with Andrew. Iterate based on feedback.
+Share results with the user. Iterate based on feedback.
 
 ---
 
@@ -189,7 +189,7 @@ Share results with Andrew. Iterate based on feedback.
 
 ### When to improve
 
-- Andrew corrects a skill's output → understand what went wrong, fix the root cause
+- User corrects a skill's output → understand what went wrong, fix the root cause
 - Audit flags high correction rate → review the corrections, find the pattern
 - You notice the skill produces inconsistent results → tighten instructions
 - A new tool or capability is available → update the skill to use it
@@ -210,7 +210,7 @@ Share results with Andrew. Iterate based on feedback.
 When fixing a skill based on one failure:
 - Ask: "What general principle does this correction represent?"
 - Fix the principle, not just the specific case
-- If Andrew's correction was "make the subject line shorter" → add guidance about concise subject lines, don't hardcode a character limit for that one email
+- If the user's correction was "make the subject line shorter" → add guidance about concise subject lines, don't hardcode a character limit for that one email
 
 ---
 
@@ -223,14 +223,14 @@ Skills that aren't earning their keep should be retired, not left to rot.
 - Not used in 60+ days AND low total usage (<3 times)
 - Superseded by a better skill or built-in capability
 - The workflow it captures no longer exists
-- Andrew explicitly says to remove it
+- The user explicitly says to remove it
 
 ### How to retire
 
 1. Set `status: "retired"` in the ledger
 2. Move the skill directory to `workspace/skills/.retired/<skill-name>/` (don't delete — in case it's needed later)
 3. Remove from `workspace/SKILLS.md`
-4. Tell Andrew what you retired and why
+4. Tell the user what you retired and why
 
 ### Resurrection
 
@@ -243,7 +243,7 @@ If a retired skill is needed again:
 
 ## Optimizing Skill Descriptions
 
-The `description` field in frontmatter is how moto decides whether to use a skill. A bad description means the skill either triggers when it shouldn't (false positive) or doesn't trigger when it should (false negative).
+The `description` field in frontmatter is how the agent decides whether to use a skill. A bad description means the skill either triggers when it shouldn't (false positive) or doesn't trigger when it should (false negative).
 
 ### Signs of bad triggering
 
@@ -301,4 +301,4 @@ This skill (skill-creator itself) is also subject to the learning loop. If you n
 
 ---
 
-_Remember: Skills are how moto gets smarter over time. Every good skill reduces Andrew's cognitive load. Every stale skill is clutter. Keep the library lean, relevant, and continuously improving._
+_Skills are how your agent gets smarter over time. Every good skill reduces cognitive load. Every stale skill is clutter. Keep the library lean, relevant, and continuously improving._

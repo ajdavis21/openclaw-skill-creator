@@ -1,0 +1,6 @@
+# Don't track user-specific ledger data in the repo
+# The install script generates a fresh one
+# Uncomment the line below if you want to keep the template in git:
+# !skill-ledger.json
+
+.DS_Store

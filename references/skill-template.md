@@ -39,7 +39,7 @@ metadata:
 
 - <What "done well" looks like>
 - <Objective measure if possible>
-- <Andrew's stated preference>
+- <User's stated preference>
 
 ## Edge Cases
 
@@ -50,7 +50,7 @@ metadata:
 
 **Example 1:**
 Input: <realistic user request>
-Output: <what moto should produce>
+Output: <what the agent should produce>
 
 ---
 _Created: <date>. Updated: <date>._
