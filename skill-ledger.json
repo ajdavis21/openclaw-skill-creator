@@ -12,6 +12,7 @@
       "status": "active"
     }
   },
+  "candidates": [],
   "audit": {
     "lastAudit": null,
     "auditIntervalDays": 14

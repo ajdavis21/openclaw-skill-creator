@@ -1,13 +1,15 @@
 ---
 name: skill-creator
-version: 1.0.0
+version: 1.1.0
 description: >
-  Create, improve, retire, and optimize OpenClaw skills with a built-in learning loop.
-  Use this skill whenever the user asks to create a new skill, turn a workflow into a skill,
-  improve or update an existing skill, review which skills are stale or underused,
-  optimize a skill's triggering description, or when you notice a repeated pattern
-  that should become a skill. Also triggers on "make this a skill", "capture this workflow",
+  Create, improve, retire, and optimize OpenClaw skills with a built-in learning loop
+  and proactive skill detection. Use this skill whenever the user asks to create a new skill,
+  turn a workflow into a skill, improve or update an existing skill, review which skills are
+  stale or underused, optimize a skill's triggering description, or when you notice a repeated
+  pattern that should become a skill. Also triggers on "make this a skill", "capture this workflow",
   "skill audit", "clean up skills", or any mention of skill lifecycle management.
+  Proactively suggests new skills when you detect repeated multi-step workflows during
+  normal work — track candidates in the skill ledger and ask the user before creating.
 metadata:
   openclaw:
     category: meta
@@ -76,6 +78,65 @@ During heartbeats or when prompted, review the ledger and flag:
 - **Missing skills**: You keep doing the same multi-step workflow manually → suggest creating a skill for it
 
 Present audit results to the user. They decide what to act on.
+
+---
+
+## Proactive Skill Detection
+
+Don't wait for the user to say "make a skill." You should be noticing patterns and suggesting skills yourself. This is how the skill library grows organically from real work instead of hypothetical planning.
+
+### What to watch for
+
+During normal work, track when you:
+- **Repeat a multi-step workflow** — Same sequence of tool calls, same synthesis pattern, same output format. If you've done it twice, note it. If you've done it three times, suggest it.
+- **Follow the same reasoning path** — You keep making the same judgment calls (e.g., "check Gmail first, then cross-reference Asana, then draft a summary"). That reasoning is a skill waiting to happen.
+- **Get the same type of request phrased differently** — the user asks "what's happening this week?" and "give me the weekly rundown" and "catch me up" — that's one skill with multiple triggers.
+- **Manually do something a skill should handle** — You find yourself executing steps that match an existing skill's domain but the skill doesn't cover this variant.
+
+### How to track candidates
+
+Maintain a `candidates` array in `skill-ledger.json`:
+
+```json
+{
+  "candidates": [
+    {
+      "pattern": "Weekly cross-system status rollup (Calendar + Asana + Gmail)",
+      "firstSeen": "2026-03-18",
+      "occurrences": 3,
+      "triggerPhrases": ["what's happening this week", "weekly rundown", "catch me up"],
+      "toolsUsed": ["gcal_list_events", "asana_search_tasks", "gmail_search_messages"],
+      "status": "pending",
+      "notes": "User asks some version of this every Monday morning"
+    }
+  ]
+}
+```
+
+Update candidates as you work:
+- First time you notice a pattern → add a candidate with `occurrences: 1`
+- See it again → increment `occurrences`, add any new trigger phrases
+- Reaches 3 occurrences → time to suggest it
+
+### When to suggest
+
+After you finish a task and recognize it matches a tracked candidate (or is clearly a repeated pattern), ask:
+
+> "I've done [this pattern] [N] times now. Want me to turn it into a skill so I handle it consistently and you don't have to explain it each time?"
+
+**Keep the suggestion short and concrete.** Name the pattern, say how many times you've seen it, and what the skill would do. One sentence, maybe two. Don't pitch — just ask.
+
+**Timing matters:**
+- Suggest right after completing the task successfully, not in the middle of it
+- Don't suggest during high-pressure or time-sensitive work — save it for the debrief
+- If the user says "not now" or "no," respect it. Mark the candidate `status: "declined"` with a note and don't bring it up again unless the pattern changes significantly
+
+### What NOT to suggest
+
+- One-off tasks that happened to be complex — complexity alone isn't a pattern
+- Tasks that are already well-covered by existing skills
+- Workflows that change every time — if there's no stable core, there's no skill
+- Anything the user has already declined unless the workflow has materially changed
 
 ---
 
@@ -284,6 +345,10 @@ When running an audit (during heartbeat or on request), produce this format:
 ### Suggested New Skills
 | Pattern | Frequency | Proposed Name |
 |---------|-----------|---------------|
+
+### Skill Candidates (Proactive Detection)
+| Pattern | Occurrences | First Seen | Trigger Phrases | Status | Recommendation |
+|---------|-------------|------------|-----------------|--------|----------------|
 ```
 
 ---

@@ -1,15 +1,16 @@
 # OpenClaw Skill Creator
 
-A meta-skill that gives your OpenClaw agent the ability to autonomously create, improve, retire, and optimize its own skills — with a built-in learning loop that makes the agent smarter over time.
+A meta-skill that gives your OpenClaw agent the ability to autonomously create, improve, retire, and optimize its own skills — with a built-in learning loop and proactive skill detection that makes the agent smarter over time.
 
 ## What it does
 
 | Capability | Description |
 |------------|-------------|
 | **Create skills** | Captures workflows into reusable SKILL.md files from user requests, conversations, or detected patterns |
+| **Proactive detection** | Tracks repeated workflows as candidates and suggests new skills when patterns emerge (3+ occurrences) |
 | **Improve skills** | Tracks corrections and quality, then iteratively improves underperforming skills |
 | **Retire skills** | Flags stale/unused skills and archives them cleanly |
-| **Audit skills** | Runs periodic health checks on the entire skill library |
+| **Audit skills** | Runs periodic health checks on the entire skill library, including candidate review |
 | **Optimize triggers** | Tunes skill descriptions so they activate at the right time |
 
 ### The Learning Loop
@@ -57,7 +58,7 @@ cp circuits/audit-skills.md ~/.openclaw/workspace/CIRCUITS/
 mkdir -p ~/.openclaw/workspace/skills/.retired/
 
 # Add to your SKILLS.md table (adjust path as needed)
-echo "| skill-creator | v1.0.0 — Create, improve, retire, and optimize skills with learning loop | workspace/skills/ | ✅ Active |"
+echo "| skill-creator | v1.1.0 — Create, improve, retire, and optimize skills with learning loop + proactive detection | workspace/skills/ | ✅ Active |"
 ```
 
 ### Custom workspace path
@@ -111,6 +112,17 @@ skill-creator/
       "status": "active"
     }
   },
+  "candidates": [
+    {
+      "pattern": "Weekly cross-system status rollup",
+      "firstSeen": "2026-03-18",
+      "occurrences": 3,
+      "triggerPhrases": ["weekly rundown", "catch me up"],
+      "toolsUsed": ["gcal_list_events", "asana_search_tasks"],
+      "status": "pending",
+      "notes": "User asks some version of this every Monday"
+    }
+  ],
   "audit": {
     "lastAudit": "2026-03-16",
     "auditIntervalDays": 14
